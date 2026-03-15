@@ -8,7 +8,7 @@ from unittest.mock import patch
 import httpx
 import pytest
 
-import promql_query
+from agent_obs import promql_query
 
 
 class TestInstantQuery:

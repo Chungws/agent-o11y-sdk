@@ -8,7 +8,7 @@ from unittest.mock import patch
 import httpx
 import pytest
 
-import logql_query
+from agent_obs import logql_query
 
 
 class TestQueryRange:

@@ -85,7 +85,3 @@ def main(argv: list[str] | None = None) -> None:
         print(json.dumps(data, indent=2))
     else:
         print(format_logs(data))
-
-
-if __name__ == "__main__":
-    main()

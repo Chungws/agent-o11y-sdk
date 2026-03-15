@@ -34,7 +34,7 @@ agent_custom_score_sum{prompt_version="{ver}"} / agent_custom_score_count{prompt
 
 ### 3. Query logs for errors
 ```bash
-python scripts/logql_query.py '{service_name="agent-obs", prompt_version="{ver}", severity_text="ERROR"}' --start 24h
+uv run logql-query '{service_name="agent-obs", prompt_version="{ver}", severity_text="ERROR"}' --start 24h
 ```
 
 ### 4. Build comparison table

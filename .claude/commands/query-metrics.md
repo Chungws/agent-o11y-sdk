@@ -1,6 +1,6 @@
 Run a PromQL query against Prometheus and interpret the results.
 
-Execute: `python scripts/promql_query.py $ARGUMENTS`
+Execute: `uv run promql-query $ARGUMENTS`
 
 ## Available metrics
 - `agent_step_count_total` — step 실행 횟수 (label: step_type)

@@ -1,6 +1,6 @@
 Run a LogQL query against Loki and interpret the results.
 
-Execute: `python scripts/logql_query.py $ARGUMENTS`
+Execute: `uv run logql-query $ARGUMENTS`
 
 ## Available labels
 - `service_name` — 항상 "agent-obs"
