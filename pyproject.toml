@@ -7,8 +7,19 @@ authors = [
     { name = "Wooseong Chung", email = "dapi@krafton.com" }
 ]
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "opentelemetry-api>=1.40.0",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.40.0",
+    "opentelemetry-sdk>=1.40.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.10.0,<0.11.0"]
 build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
+    "ruff>=0.15.6",
+]

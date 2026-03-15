@@ -6,14 +6,19 @@ receivers:
       http:
         endpoint: 0.0.0.0:4318
 
-exporters:
-  prometheusremotewrite:
-    endpoint: http://prometheus:9090/api/v1/write
-    resource_to_telemetry_conversion:
-      enabled: true
+processors:
+  deltatocumulative:
 
-  otlphttp/loki:
+exporters:
+  otlp_http/prometheus:
+    endpoint: http://prometheus:9090/api/v1/otlp
+    tls:
+      insecure: true
+
+  otlp_http/loki:
     endpoint: http://loki:3100/otlp
+    tls:
+      insecure: true
 
   debug:
     verbosity: basic
@@ -25,7 +30,8 @@ service:
       exporters: [debug]
     metrics:
       receivers: [otlp]
-      exporters: [prometheusremotewrite, debug]
+      processors: [deltatocumulative]
+      exporters: [otlp_http/prometheus, debug]
     logs:
       receivers: [otlp]
-      exporters: [otlphttp/loki, debug]
+      exporters: [otlp_http/loki, debug]
