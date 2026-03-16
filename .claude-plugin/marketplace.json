@@ -1,0 +1,18 @@
+{
+  "name": "agent-obs-marketplace",
+  "owner": {
+    "name": "Wooseong Chung"
+  },
+  "plugins": [
+    {
+      "name": "agent-obs",
+      "source": "./plugins/agent-obs",
+      "description": "Agent observability SDK — instrument, observe, and compare AI agent behavior",
+      "version": "0.1.0",
+      "author": {
+        "name": "Wooseong Chung"
+      },
+      "skills": ["./skills/setup"]
+    }
+  ]
+}
