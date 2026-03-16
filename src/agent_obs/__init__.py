@@ -11,6 +11,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 from opentelemetry.sdk.metrics import MeterProvider
 from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+from opentelemetry.sdk.metrics.view import ExplicitBucketHistogramAggregation, View
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
 
 from agent_obs.context import ExperimentContext
@@ -64,7 +65,42 @@ def init(
         OTLPMetricExporter(endpoint=otlp_endpoint, insecure=True),
         export_interval_millis=5000,
     )
-    meter_provider = MeterProvider(resource=resource, metric_readers=[metric_reader])
+    _DURATION_BUCKETS = [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 30]
+    _TOKEN_BUCKETS = [10, 50, 100, 250, 500, 1000, 2500, 5000, 10000]
+    _SCORE_BUCKETS = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0]
+    _STEP_COUNT_BUCKETS = [1, 2, 5, 10, 20, 50, 100]
+
+    views = [
+        View(
+            instrument_name="agent_step_duration_seconds",
+            aggregation=ExplicitBucketHistogramAggregation(
+                boundaries=_DURATION_BUCKETS
+            ),
+        ),
+        View(
+            instrument_name="agent_episode_duration_seconds",
+            aggregation=ExplicitBucketHistogramAggregation(
+                boundaries=_DURATION_BUCKETS
+            ),
+        ),
+        View(
+            instrument_name="agent_token_usage",
+            aggregation=ExplicitBucketHistogramAggregation(boundaries=_TOKEN_BUCKETS),
+        ),
+        View(
+            instrument_name="agent_episode_steps",
+            aggregation=ExplicitBucketHistogramAggregation(
+                boundaries=_STEP_COUNT_BUCKETS
+            ),
+        ),
+        View(
+            instrument_name="agent_custom_score",
+            aggregation=ExplicitBucketHistogramAggregation(boundaries=_SCORE_BUCKETS),
+        ),
+    ]
+    meter_provider = MeterProvider(
+        resource=resource, metric_readers=[metric_reader], views=views
+    )
 
     tracer = tracer_provider.get_tracer("agent-obs")
     meter = meter_provider.get_meter("agent-obs")
